@@ -43,7 +43,7 @@ SWEEP_SEEDS = tuple(range(100000, 100005))
 # --- Python-`random` mit festem Seed und ändern sich nie mit einer Bibliotheksversion; 2026-09-27, alle Werte über ev.* nachgerechnet, s. tests/test_claims.py) ---
 # BETRIEBSNETZ IST STRUKTURELL DREIECKFREI: das Raster ist ein bipartiter Graph (nur waagerechte/senkrechte Kanten, keine Diagonalen) - C=T=0 EXAKT bei jedem
 #   Seed und jedem Sperranteil beim Netztyp "grid" (keine Messungenauigkeit, ein mathematischer Fakt: bipartite Graphen sind dreieckfrei). Der Zufallsgraph
-#   gleicher Kantenzahl hat dagegen ein kleines, aber positives Clustering (C=0.0374 bei Standardgröße), nahe am Erdős-Rényi-Erwartungswert (C_ER=0.0248).
+#   gleicher Kantenzahl hat dagegen ein kleines, aber positives Clustering (C=0.0374 bei Standardgröße), nahe am Clustering einer Erdős-Rényi-Stichprobe (C_ER=0.0248; Erwartungswert 0.0364).
 # WATTS-STROGATZ-ÜBERGANG (n=200, k=8, Seed 35): bei p=0.001 ist C/C(0) noch 0.9959, aber L/L(0) schon auf 0.9112 gefallen; bei p=0.01 (Vorgabewert) ist
 #   C/C(0)=0.9751 (kaum verändert) gegen L/L(0)=0.5300 (schon halbiert!) - der scheinbare Widerspruch (hohes Clustering UND kurze Wege) tritt schon bei
 #   winzigen Umverdrahtungsanteilen auf. Bei p=0.1 ist L/L(0) bereits auf 0.2832 gefallen, während C/C(0) mit 0.7372 noch deutlich über dem Zufallsniveau liegt.
@@ -72,7 +72,7 @@ PRESETS = {
 PRESET_HELP = {
     "Betriebsnetz Standardfall": "100 Kreuzungen, 144 Straßen: das Raster ist bipartit und darum STRUKTURELL dreieckfrei - Clustering C=0.0000 und Transitivität T=0.0000 EXAKT (kein Messfehler, "
                                  "ein mathematischer Fakt für jeden Sperranteil). Mittlere Weglänge L=7.15, Assortativität r=0.10.",
-    "Zufallsgraph-Kontrast": "100 Knoten, 180 Kanten, ein reiner Zufallsgraph statt Raster: Clustering C=0.0374 - nicht null wie beim Raster, aber nahe am Erdős-Rényi-Erwartungswert (C_ER=0.0248) "
+    "Zufallsgraph-Kontrast": "100 Knoten, 180 Kanten, ein reiner Zufallsgraph statt Raster: Clustering C=0.0374 - nicht null wie beim Raster, aber nahe am Clustering einer Erdős-Rényi-Stichprobe (C_ER=0.0248; Erwartungswert 0.0364) "
                              "gleicher Größe. Mittlere Weglänge L=3.51, deutlich kürzer als das Raster (7.15) bei mehr Kanten.",
     "Watts-Strogatz-Lehrbuch (Ring von Hand)": "Reines Ring-Gitter (n=200, k=8, p=0, keine Umverdrahtung): Clustering C=0.6429, exakt gleich der geschlossenen Form 3(k-2)/(4(k-1))=18/28. Mittlere "
                                                 "Weglänge L=12.94 - fast wie ein Pfad. ω=-0.79: klar gitterartig, kein 'kleine Welt'-Netz ohne Umverdrahtung.",

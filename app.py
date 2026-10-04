@@ -56,7 +56,7 @@ gegen **Erdős-Rényi** G(n,m) (zerstört auch die Gradfolge selbst).
 """
 )
 st.caption(
-    "Kind der Zentralität-Demo (siebtes Stück der Graphen-und-Netzwerke-Reihe); geplante Nachfolger (nicht gebaut): Robustheit, Kaskaden, kritische Knoten härten, Bandbreite. Drei Instanzen: das "
+    "Kind der Zentralität-Demo (siebtes Stück der Graphen-und-Netzwerke-Reihe); Nachfolger (alle gebaut): Robustheit, Kaskaden, kritische Knoten härten, Bandbreite. Drei Instanzen: das "
     "Betriebsnetz aus den vorigen Stücken, ein NEUES Ring-Umverdrahtungs-Modell (Watts-Strogatz) und ein NEUES skalenfreies Netz (Barabási-Albert, bevorzugte Anbindung)."
 )
 
@@ -133,7 +133,7 @@ with st.sidebar:
     seed = st.number_input("Zufalls-Seed der Instanz", *bounds("seed_input"), value=int(ss["seed_input"]), key="seed_widget", step=1, on_change=store_from_widget, args=("seed_input",))
     st.button("🎲 Neue Instanz generieren", width="stretch", on_click=randomize_seed)
     order = st.radio("Nachbarreihenfolge", options=list(C.ORDERS), format_func=lambda v: C.ORDER_LABELS[v], key="order_select",
-                      help="Ändert nie eine Strukturkennzahl - nur die interne Buchführungsreihenfolge (Determinismus-Test).")
+                      help="Ändert nie eine Kennzahl des Netzes selbst - nur die interne Buchführungsreihenfolge (Determinismus-Test). Die Konfigurationsmodell-Stichprobe ist dabei eine andere Zufallsziehung und kann leicht abweichen.")
 
 step = st.select_slider("Schritt", options=list(C.STEPS), key="sk_step", format_func=lambda s: C.STEPS[s])
 
@@ -260,6 +260,6 @@ Implementiert in `sk_algorithm.py` (Clustering, Transitivität, mittlere Weglän
 st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
-    "Operations Research und Machine Learning. Interesse an einer maßgeschneiderten Lösung für "
-    "Ihr Unternehmen? [Kontakt aufnehmen](https://sebastianhanisch.net/kontakt.html)"
+    "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
+    "Mehr zur Reihe: [Graphen und Netzwerke: BFS bis Cliquenbandbreite](https://sebastianhanisch.net/konzepte-graphen-netzwerke.html)."
 )

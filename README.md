@@ -12,9 +12,9 @@ Siebtes Stück der **Graphen-und-Netzwerke-Reihe** der "Konzepte"-Reihe für die
  ├─ 3 Starke Zusammenhangskomponenten, topologische Sortierung                [gebaut: scc-demo]
  ├─ 5 Graphfärbung                                                            [gebaut: graph-coloring-demo]
  ├─ 6 Zentralität ─ 7 Strukturkennzahlen                                      [gebaut: centrality-demo ─ DIESES STÜCK]
- │        ├─ 8 Robustheit ─ 9 Kaskaden und Ausbreitung                        [nicht gebaut]
- │        └─ 10 Kritische Knoten härten                                       [nicht gebaut]
- └─ 11 Bandbreite ─ 12 Bandbreite von G(n,k,b) und Cliquenüberdeckung         [nicht gebaut]
+ │        ├─ 8 Robustheit ─ 9 Kaskaden und Ausbreitung                        [gebaut: robustheit-demo ─ kaskaden-demo]
+ │        └─ 10 Kritische Knoten härten                                       [gebaut: haertung-demo]
+ └─ 11 Bandbreite ─ 12 Bandbreite von G(n,k,b) und Cliquenüberdeckung         [gebaut: bandbreite-demo ─ cliquenbandbreite-demo]
 ```
 
 Ergebnis in Kürze: Das Betriebsnetz (Straßenraster) ist **strukturell dreieckfrei** (bipartiter Graph – Clustering und Transitivität sind exakt 0, kein Messfehler). Schon bei einer Umverdrahtungswahrscheinlichkeit von **p=0.01** (1 % der Kanten) fällt die mittlere Weglänge eines Ring-Gitters auf **53 %** ihres Ausgangswerts, während das Clustering noch bei **98 %** bleibt – genau die Watts-Strogatz-Signatur. Die überraschendste Zahl: das skalenfreie Netz (Barabási-Albert) ist zwar disassortativ (r=−0.17), aber **signifikant WENIGER disassortativ** als seine eigene Gradfolge unter dem Konfigurationsmodell erwarten lässt (z=+25 gegen 200 Ziehungen) – Assortativität und Clustering des Betriebsnetzes bzw. des Rings bei p=0.01 sind dagegen **nicht** signifikant von der bloßen Gradfolge unterscheidbar (|z|<2).
@@ -46,7 +46,7 @@ Standardeinstellungen, Seed 35, sofern nicht anders angegeben; alle Verfahren si
 |---|---|
 | **Stimmt das Verfahren?** | ✅ Clustering/Transitivität/mittlere Weglänge/Assortativität == networkx auf über 380 Instanzen; Erdős-Rényi- und Konfigurationsmodell-Invarianten (exakte Kantenzahl bzw. Gradfolge) über je ≥200 Instanzen |
 | **Betriebsnetz Raster (100 Knoten, 144 Straßen)** | C=T=0.0000 EXAKT (bipartit), L=7.1516, r=0.10 (z=1.35, nicht signifikant) |
-| **Zufallsgraph gleicher Größe (180 Kanten)** | C=0.0374 (nahe Erdős-Rényi-Erwartung 0.0248), L=3.5066 |
+| **Zufallsgraph gleicher Größe (180 Kanten)** | C=0.0374 (nahe einer Erdős-Rényi-Stichprobe 0.0248, Erwartungswert 0.0364), L=3.5066 |
 | **Watts-Strogatz-Übergang** (n=200, k=8) | p=0.001: C/C(0)=0.9959, L/L(0)=0.9112 — p=0.01: C/C(0)=0.9751, **L/L(0)=0.5300** — p=0.1: C/C(0)=0.7372, L/L(0)=0.2832 |
 | **Ring-Gitter von Hand** | C(p=0) exakt gleich 3(k-2)/(4(k-1)) für k=4,6,8,10,12,16,20 (z. B. k=8: 0.642857) |
 | **Konfigurationsmodell zerstört Ring-Clustering** | C=0.6429 (Original) → C=0.0145 (Konfigurationsmodell, 5000 Doppeltausch-Versuche) |
@@ -58,7 +58,7 @@ Presets (8), alle mit den Zahlen in ihren Hilfetexten (`tests/test_presets.py`):
 | Preset | Was es zeigt |
 |---|---|
 | Betriebsnetz Standardfall | 100 Kreuzungen, 144 Straßen: C=T=0 exakt (bipartit) |
-| Zufallsgraph-Kontrast | 100 Knoten, 180 Kanten: C=0.0374, nahe Erdős-Rényi (0.0248) |
+| Zufallsgraph-Kontrast | 100 Knoten, 180 Kanten: C=0.0374, nahe Erdős-Rényi (Erwartungswert 0.0364; Stichprobe 0.0248) |
 | Watts-Strogatz-Lehrbuch (Ring von Hand) | Reines Ring-Gitter (p=0): C=0.6429 exakt = 3(k-2)/(4(k-1)), ω=−0.79 (gitterartig) |
 | Kleine-Welt-Übergang (p-Sweep) | p=0.01: L/L(0)=0.53, C/C(0)=0.975 – die Watts-Strogatz-Signatur |
 | Skalenfreies Netz (Heavy Tail) | Heavy-Tail-Verhältnis 8.84 gegen 1.39 (Betriebsnetz) und 2.78 (Erdős-Rényi) |
@@ -141,3 +141,7 @@ venv\Scripts\streamlit run app.py
 - Clauset, A., Shalizi, C. R., & Newman, M. E. J. (2009). *Power-law distributions in empirical data.* SIAM Review 51(4), 661–703 (nur als rigoroser Weg genannt, einen Machtgesetz-Test durchzuführen – hier bewusst nicht gebaut).
 
 Gebaut mit Streamlit, Plotly, NumPy und pandas.
+
+---
+
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Graphen und Netzwerke: BFS bis Cliquenbandbreite](https://sebastianhanisch.net/konzepte-graphen-netzwerke.html).
