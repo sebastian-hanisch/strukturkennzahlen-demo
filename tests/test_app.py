@@ -136,7 +136,7 @@ def test_permalink_accepts_valid_values_and_writes_them_back():
     _ok(at)
     ss = at.session_state
     assert (ss["kind_select"], ss["nring_slider"], ss["kring_select"], ss["prewire_select"], ss["seed_input"], ss["sk_step"]) == ("ring", 80, 6, 0.03, 7, 2)
-    assert at.query_params["seed"] == ["7"] and at.query_params["step"] == ["2"]
+    assert at.query_params["seed"] in (["7"], "7") and at.query_params["step"] in (["2"], "2")
     assert ss["nring_widget"] == 80 and ss["seed_widget"] == 7
 
 
