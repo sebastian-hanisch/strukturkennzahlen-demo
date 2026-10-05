@@ -241,7 +241,7 @@ with st.expander("📐 Mathematische Formulierung"):
 
 **Erdős-Rényi G(n,m) (Erdős und Rényi 1959).** $m$ verschiedene Kantenpaare gleichverteilt aus allen $\binom{n}{2}$ möglichen gezogen - zerstört auch die Gradfolge selbst.
 
-**Konfigurationsmodell per Kanten-Doppeltausch (Maslov und Sneppen 2002).** Zwei Kanten $(a,b)$, $(c,d)$ mit vier verschiedenen Knoten zu $(a,d)$, $(c,b)$ getauscht, nur wenn beide neuen Kanten noch
+**Konfigurationsmodell per Kanten-Doppeltausch (Maslov und Sneppen 2002).** Zwei Kanten $(a,b)$, $(c,d)$ mit vier verschiedenen Knoten zu $(a,d)$, $(c,b)$ getauscht (die zweite Kante wird per Münzwurf vorher umgedreht), nur wenn beide neuen Kanten noch
 nicht existieren - die Gradfolge (Multimenge) bleibt bei jedem einzelnen Tausch exakt erhalten.
 
 **Barabási-Albert, bevorzugte Anbindung (Barabási und Albert 1999).** Kern aus $m_0$ Knoten (Kreis), jeder weitere Knoten hängt sich mit $m$ Kanten an $m$ vorhandene Knoten proportional zu deren

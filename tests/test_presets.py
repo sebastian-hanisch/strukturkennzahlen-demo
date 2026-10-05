@@ -77,16 +77,16 @@ def test_help_assortativitaet_test():
     adj = A.adjacency(inst.n, inst.edges)
     d = ev.assortativity_null_distribution(adj, C.N_DRAWS_ASSORT, C.DEFAULT_N_SWAPS, settings.seed)
     assert round(d["original"], 2) == 0.10
-    assert round(d["z"], 2) == 1.35
-    _has("Assortativität-Test (Betriebsnetz gegen Konfigurationsmodell)", "0.10", "1.35")
+    assert round(d["z"], 2) == 1.51
+    _has("Assortativität-Test (Betriebsnetz gegen Konfigurationsmodell)", "0.10", "1.51")
 
 
 def test_help_config_zerstoert_clustering():
     settings = _settings("Konfigurationsmodell zerstört Clustering")
     inst, a = ev.analyse(settings)
     assert round(a.avg_clustering, 4) == 0.6429
-    assert round(a.config.avg_clustering, 4) == 0.0145
-    _has("Konfigurationsmodell zerstört Clustering", "0.6429", "0.0145")
+    assert round(a.config.avg_clustering, 4) == 0.0268
+    _has("Konfigurationsmodell zerstört Clustering", "0.6429", "0.0268")
 
 
 def test_help_ba_disassortativ():
@@ -96,5 +96,5 @@ def test_help_ba_disassortativ():
     adj = A.adjacency(inst.n, inst.edges)
     d = ev.assortativity_null_distribution(adj, C.N_DRAWS_ASSORT, C.DEFAULT_N_SWAPS, settings.seed)
     assert round(d["original"], 2) == -0.17
-    assert round(d["z"], 1) == 25.1
-    _has("BA ist disassortativ", "-0.17", "+25.1")
+    assert round(d["z"], 2) == -1.88
+    _has("BA ist disassortativ", "-0.17", "-1.88")

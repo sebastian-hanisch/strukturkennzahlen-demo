@@ -4,7 +4,7 @@
 
 Siebtes Stück der **Graphen-und-Netzwerke-Reihe** der "Konzepte"-Reihe für die Website "Sebastian Hanisch – Operations Research und Machine Learning", Kind von Stück 6 (Zentralität, [centrality-demo](https://github.com/sebastian-hanisch/centrality-demo)): dort wurden einzelne Knoten und Kanten bewertet, jetzt geht es um das Netz als Ganzes. Drei klassische Fragen der Netzwerkanalyse, jede über einen Vergleich mit einem **Nullmodell** beantwortet, nicht durch bloßes Ansehen: **Clustering** (wie oft sind die Nachbarn eines Knotens auch untereinander verbunden?), die **Kleine-Welt-Eigenschaft** (Watts und Strogatz 1998: hohes Clustering UND kurze mittlere Weglänge gleichzeitig – ein scheinbarer Widerspruch, den schon eine winzige zufällige Umverdrahtung auflöst), **Assortativität** (Newman 2002: hängen sich hochgradige Knoten eher an andere hochgradige oder an schwachgradige?). Die zentrale methodische Frage: ist eine gemessene Eigenschaft etwas Eigenes, oder folgt sie schon zwangsläufig aus der bloßen Gradfolge? Antwort über **gradfolgen-erhaltende Randomisierung** (Maslov und Sneppen 2002, Kanten-Doppeltausch) gegen **Erdős-Rényi** G(n,m) (Erdős und Rényi 1959, zerstört auch die Gradfolge selbst).
 
-**Einordnung in die Reihe:** die Reihe hat zwölf Stücke, dies ist das siebte (Details in `graphen-planung/PLAN.md` des Portfolio-Ordners):
+**Einordnung in die Reihe:** die Reihe hat dreizehn Stücke (zwölf im Baum, dazu die Fall-Demo interne-verlinkung-demo), dies ist das siebte (Details in `graphen-planung/PLAN.md` des Portfolio-Ordners):
 
 ```
 1 BFS und DFS (Wurzel)                                                        [gebaut: bfs-dfs-demo]
@@ -17,7 +17,7 @@ Siebtes Stück der **Graphen-und-Netzwerke-Reihe** der "Konzepte"-Reihe für die
  └─ 11 Bandbreite ─ 12 Bandbreite von G(n,k,b) und Cliquenüberdeckung         [gebaut: bandbreite-demo ─ cliquenbandbreite-demo]
 ```
 
-Ergebnis in Kürze: Das Betriebsnetz (Straßenraster) ist **strukturell dreieckfrei** (bipartiter Graph – Clustering und Transitivität sind exakt 0, kein Messfehler). Schon bei einer Umverdrahtungswahrscheinlichkeit von **p=0.01** (1 % der Kanten) fällt die mittlere Weglänge eines Ring-Gitters auf **53 %** ihres Ausgangswerts, während das Clustering noch bei **98 %** bleibt – genau die Watts-Strogatz-Signatur. Die überraschendste Zahl: das skalenfreie Netz (Barabási-Albert) ist zwar disassortativ (r=−0.17), aber **signifikant WENIGER disassortativ** als seine eigene Gradfolge unter dem Konfigurationsmodell erwarten lässt (z=+25 gegen 200 Ziehungen) – Assortativität und Clustering des Betriebsnetzes bzw. des Rings bei p=0.01 sind dagegen **nicht** signifikant von der bloßen Gradfolge unterscheidbar (|z|<2).
+Ergebnis in Kürze: Das Betriebsnetz (Straßenraster) ist **strukturell dreieckfrei** (bipartiter Graph – Clustering und Transitivität sind exakt 0, kein Messfehler). Schon bei einer Umverdrahtungswahrscheinlichkeit von **p=0.01** (1 % der Kanten) fällt die mittlere Weglänge eines Ring-Gitters auf **53 %** ihres Ausgangswerts, während das Clustering noch bei **98 %** bleibt – genau die Watts-Strogatz-Signatur. Die Disassortativität des skalenfreien Netzes (Barabási-Albert, r=−0.17) folgt dagegen weitgehend schon aus seiner **Gradfolge**: das Konfigurationsmodell liefert im Mittel −0.11 (z=−1.88 gegen 200 Ziehungen, knapp unter der Schwelle |z|=2) – ebenso wie Assortativität und Clustering des Betriebsnetzes bzw. des Rings bei p=0.01, die **nicht** signifikant von der bloßen Gradfolge unterscheidbar sind (|z|<2).
 
 ## Warum dieses Problem
 
@@ -33,9 +33,9 @@ Abgrenzung: kein formaler Machtgesetz-Test für die Gradverteilung (Clauset, Sha
 | **H2** Das Betriebsnetz (Raster) hat wie ein echtes Straßennetz ein kleines, aber positives Clustering. | ❌ **Widerlegt:** das Raster ist bipartit und darum STRUKTURELL dreieckfrei – C=T=0 exakt, bei jedem Seed und Sperranteil. Erst der Zufallsgraph gleicher Kantenzahl zeigt positives Clustering (0.0374). |
 | **H3** Schon eine winzige Umverdrahtung (kleines p) senkt die mittlere Weglänge stark, ohne das Clustering nennenswert zu senken. | ✅ Bestätigt: bei p=0.01 ist L/L(0)=0.53 (fast halbiert), C/C(0)=0.975 (kaum verändert) – die klassische Watts-Strogatz-Kleine-Welt-Signatur. |
 | **H4** Das Ring-Gitter-Clustering bei p=0 stimmt mit der geschlossenen Form C=3(k-2)/(4(k-1)) exakt überein. | ✅ Bestätigt als **Satz**, nicht nur beobachtet: exakte Übereinstimmung für k=4,6,8,10,12,16,20. |
-| **H5** Das skalenfreie Netz ist disassortativ, weil seine schiefe Gradverteilung das erzwingt. | ❌ **Widerlegt (überraschend):** r=−0.17 ist zwar disassortativ, aber z=+25.1 gegen 200 Konfigurationsmodell-Ziehungen zeigt: das Netz ist SIGNIFIKANT WENIGER disassortativ, als seine eigene Gradfolge unter zufälliger Neuverdrahtung erwarten lässt. Bevorzugte Anbindung erzeugt eine mildere Form von Disassortativität als reines Zufallspaaren derselben Grade. |
-| **H6** Die Assortativität des Betriebsnetzes und des Rings ist eine eigenständige Eigenschaft, keine Folge der Gradfolge. | ❌ **Widerlegt:** Betriebsnetz z=1.35, Ring (p=0.01) z=−1.13 – beide NICHT signifikant (\|z\|<2), mit der bloßen Gradfolge verträglich. |
-| **H7** Das Konfigurationsmodell zerstört das hohe Clustering eines Ring-Gitters trotz identischer Gradfolge. | ✅ Bestätigt: Ring-Clustering 0.6429 fällt bei einer Konfigurationsmodell-Realisierung auf 0.0145 (fast Erdős-Rényi-Niveau 0.0396) – das Clustering kommt aus der geometrischen Anordnung, nicht aus der Gradfolge. |
+| **H5** Das skalenfreie Netz ist disassortativ, weil seine schiefe Gradverteilung das erzwingt. | ✅ **Weitgehend bestätigt:** r=−0.17; das Konfigurationsmodell (gleiche Gradfolge) liefert im Mittel −0.11 (Std 0.029), z=−1.88 gegen 200 Ziehungen – knapp nicht signifikant (Betrag von z unter 2), der Großteil der Disassortativität folgt also aus der Gradfolge. (Eine frühere Fassung zeigte z=+25: ein Artefakt des Doppeltauschs, der die Kanten immer als (kleiner, größerer) Endpunkt paarte und so nicht gleichverteilt zog; mit zufälliger Paarung und gegen `networkx.double_edge_swap` geprüft verschwindet der Effekt.) |
+| **H6** Die Assortativität des Betriebsnetzes und des Rings ist eine eigenständige Eigenschaft, keine Folge der Gradfolge. | ❌ **Widerlegt:** Betriebsnetz z=1.51, Ring (p=0.01) z=−1.08 – beide NICHT signifikant (\|z\|<2), mit der bloßen Gradfolge verträglich. |
+| **H7** Das Konfigurationsmodell zerstört das hohe Clustering eines Ring-Gitters trotz identischer Gradfolge. | ✅ Bestätigt: Ring-Clustering 0.6429 fällt bei einer Konfigurationsmodell-Realisierung auf 0.0268 (Erdős-Rényi-Niveau 0.0396) – das Clustering kommt aus der geometrischen Anordnung, nicht aus der Gradfolge. |
 | **H8** Das skalenfreie Netz zeigt eine sichtbar langschwänzigere Gradverteilung als Betriebsnetz und Erdős-Rényi. | ✅ Bestätigt: Verhältnis Maximalgrad/mittlerer Grad 8.84 (BA) gegen 2.78 (Erdős-Rényi) gegen 1.39 (Betriebsnetz). |
 
 ## Befunde (gemessen, keine Behauptungen)
@@ -45,13 +45,13 @@ Standardeinstellungen, Seed 35, sofern nicht anders angegeben; alle Verfahren si
 | Frage | Ergebnis |
 |---|---|
 | **Stimmt das Verfahren?** | ✅ Clustering/Transitivität/mittlere Weglänge/Assortativität == networkx auf über 380 Instanzen; Erdős-Rényi- und Konfigurationsmodell-Invarianten (exakte Kantenzahl bzw. Gradfolge) über je ≥200 Instanzen |
-| **Betriebsnetz Raster (100 Knoten, 144 Straßen)** | C=T=0.0000 EXAKT (bipartit), L=7.1516, r=0.10 (z=1.35, nicht signifikant) |
+| **Betriebsnetz Raster (100 Knoten, 144 Straßen)** | C=T=0.0000 EXAKT (bipartit), L=7.1516, r=0.10 (z=1.51, nicht signifikant) |
 | **Zufallsgraph gleicher Größe (180 Kanten)** | C=0.0374 (nahe einer Erdős-Rényi-Stichprobe 0.0248, Erwartungswert 0.0364), L=3.5066 |
 | **Watts-Strogatz-Übergang** (n=200, k=8) | p=0.001: C/C(0)=0.9959, L/L(0)=0.9112 — p=0.01: C/C(0)=0.9751, **L/L(0)=0.5300** — p=0.1: C/C(0)=0.7372, L/L(0)=0.2832 |
 | **Ring-Gitter von Hand** | C(p=0) exakt gleich 3(k-2)/(4(k-1)) für k=4,6,8,10,12,16,20 (z. B. k=8: 0.642857) |
-| **Konfigurationsmodell zerstört Ring-Clustering** | C=0.6429 (Original) → C=0.0145 (Konfigurationsmodell, 5000 Doppeltausch-Versuche) |
+| **Konfigurationsmodell zerstört Ring-Clustering** | C=0.6429 (Original) → C=0.0268 (Konfigurationsmodell, 5000 Doppeltausch-Versuche) |
 | **Gradverteilung (Heavy-Tail-Verhältnis Max/Mittel)** | Betriebsnetz 1.39, Erdős-Rényi 2.78, skalenfreies Netz **8.84** |
-| **Assortativität gegen Konfigurationsmodell-Nullverteilung (200 Ziehungen)** | Betriebsnetz r=0.10, z=1.35 (nicht signifikant) — Ring (p=0.01) r=−0.04, z=−1.13 (nicht signifikant) — **skalenfreies Netz r=−0.17, z=+25.1 (signifikant, GEGENTEILIGE Richtung)** |
+| **Assortativität gegen Konfigurationsmodell-Nullverteilung (200 Ziehungen)** | Betriebsnetz r=0.10, z=1.51 (nicht signifikant) — Ring (p=0.01) r=−0.04, z=−1.08 (nicht signifikant) — skalenfreies Netz r=−0.17, z=−1.88 (Nullmodell-Mittel −0.11, knapp nicht signifikant) |
 
 Presets (8), alle mit den Zahlen in ihren Hilfetexten (`tests/test_presets.py`):
 
@@ -62,9 +62,9 @@ Presets (8), alle mit den Zahlen in ihren Hilfetexten (`tests/test_presets.py`):
 | Watts-Strogatz-Lehrbuch (Ring von Hand) | Reines Ring-Gitter (p=0): C=0.6429 exakt = 3(k-2)/(4(k-1)), ω=−0.79 (gitterartig) |
 | Kleine-Welt-Übergang (p-Sweep) | p=0.01: L/L(0)=0.53, C/C(0)=0.975 – die Watts-Strogatz-Signatur |
 | Skalenfreies Netz (Heavy Tail) | Heavy-Tail-Verhältnis 8.84 gegen 1.39 (Betriebsnetz) und 2.78 (Erdős-Rényi) |
-| Assortativität-Test (Betriebsnetz gegen Konfigurationsmodell) | r=0.10, z=1.35 – nicht signifikant |
-| Konfigurationsmodell zerstört Clustering | Ring-C fällt von 0.6429 auf 0.0145 unter dem Konfigurationsmodell |
-| BA ist disassortativ | r=−0.17, aber z=+25.1 – WENIGER disassortativ als die Gradfolge allein erwarten ließe |
+| Assortativität-Test (Betriebsnetz gegen Konfigurationsmodell) | r=0.10, z=1.51 – nicht signifikant |
+| Konfigurationsmodell zerstört Clustering | Ring-C fällt von 0.6429 auf 0.0268 unter dem Konfigurationsmodell |
+| BA ist disassortativ | r=−0.17, Konfigurationsmodell im Mittel −0.11 (z=−1.88): die Disassortativität folgt weitgehend aus der Gradfolge |
 
 ## Modell und Verfahren
 
@@ -75,7 +75,7 @@ Presets (8), alle mit den Zahlen in ihren Hilfetexten (`tests/test_presets.py`):
 - **Mittlere Weglänge** (`average_distance`): Mittelwert über alle erreichbaren ungeordneten Knotenpaare – wohldefiniert auch bei unzusammenhängenden Netzen, anders als `networkx.average_shortest_path_length`.
 - **Assortativität** (`degree_assortativity`, Newman 2002): Pearson-Korrelation der Grade an beiden Enden jeder Kante (beide Richtungen).
 - **Erdős-Rényi G(n,m)** (`erdos_renyi_gnm`, Erdős und Rényi 1959): m verschiedene Kantenpaare gleichverteilt gezogen – zerstört auch die Gradfolge.
-- **Konfigurationsmodell** (`configuration_null`, Maslov und Sneppen 2002): Kanten-Doppeltausch, Gradfolge exakt erhalten.
+- **Konfigurationsmodell** (`configuration_null`, Maslov und Sneppen 2002): Kanten-Doppeltausch (zufällige Paarung der Endpunkte), Gradfolge exakt erhalten.
 - **ω** (`omega_watts_strogatz`, Telesford u. a. 2011): ω = L_rand/L − C/C_lattice, nur auf der Ring-Umverdrahtungs-Instanz definiert.
 
 ## Was die App zeigt

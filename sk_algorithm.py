@@ -174,10 +174,37 @@ def erdos_renyi_gnm(n, m, seed):
 # --- Nullmodell 2: Konfigurationsmodell per Kanten-Doppeltausch (Maslov und Sneppen 2002) -----------------------------------------------------------------
 
 
+def try_double_swap(edges, nbrs, i, j, flip):
+    """Ein Tauschversuch auf den Kanten i und j: (a,b), (c,d) -> (a,d), (c,b); mit `flip` wird die zweite Kante vorher umgedreht, also (a,b), (d,c) -> (a,c), (d,b). Beide Paarungen werden gebraucht:
+    paart man immer nach (kleiner, größerer) Endpunkt nur in einer Richtung, erreicht die Kette nur einen Teil der Graphen mit dieser Gradfolge und ist nicht gleichverteilt (das verzerrt etwa
+    die Assortativität des Nullmodells stark). Gibt True zurück, wenn getauscht wurde."""
+    if i == j:
+        return False
+    a, b = edges[i]
+    c, d = edges[j]
+    if flip:
+        c, d = d, c
+    if len({a, b, c, d}) < 4:
+        return False
+    if d in nbrs[a] or b in nbrs[c]:
+        return False                                            # würde eine Mehrfachkante erzeugen -- verwerfen, neu ziehen
+    nbrs[a].discard(b)
+    nbrs[b].discard(a)
+    nbrs[c].discard(d)
+    nbrs[d].discard(c)
+    nbrs[a].add(d)
+    nbrs[d].add(a)
+    nbrs[c].add(b)
+    nbrs[b].add(c)
+    edges[i] = [min(a, d), max(a, d)]
+    edges[j] = [min(c, b), max(c, b)]
+    return True
+
+
 def configuration_null(adj, n_swaps, seed):
-    """Gradfolgen-erhaltende Randomisierung: `n_swaps` Versuche (nicht zwingend Erfolge). Je Versuch zwei zufällige Kanten (a,b) und (c,d) mit vier verschiedenen Knoten ziehen und zu (a,d) und (c,b)
-    tauschen, nur wenn beide neuen Kanten noch nicht existieren (sonst verwerfen und beim nächsten Versuch neu ziehen) - die Gradfolge (Multimenge) bleibt bei jedem einzelnen Tausch exakt
-    unverändert, weil jeder Knoten dieselbe Zahl an Kantenenden behält, nur an einen anderen Partner umgehängt."""
+    """Gradfolgen-erhaltende Randomisierung: `n_swaps` Versuche (nicht zwingend Erfolge). Je Versuch zwei zufällige Kanten (a,b) und (c,d) mit vier verschiedenen Knoten ziehen, mit einem Münzwurf die
+    Richtung der zweiten Kante wählen und zu (a,d) und (c,b) tauschen, nur wenn beide neuen Kanten noch nicht existieren (sonst verwerfen und beim nächsten Versuch neu ziehen) - die Gradfolge
+    (Multimenge) bleibt bei jedem einzelnen Tausch exakt unverändert, weil jeder Knoten dieselbe Zahl an Kantenenden behält, nur an einen anderen Partner umgehängt."""
     n = len(adj)
     nbrs = [set(a) for a in adj]
     edges = []
@@ -191,26 +218,8 @@ def configuration_null(adj, n_swaps, seed):
         if m < 2:
             break
         i, j = rng.randrange(m), rng.randrange(m)
-        if i == j:
-            continue
-        a, b = edges[i]
-        c, d = edges[j]
-        if len({a, b, c, d}) < 4:
-            continue
-        na, nb = (a, d) if a < d else (d, a)
-        nc, nd = (c, b) if c < b else (b, c)
-        if nb in nbrs[na] or nd in nbrs[nc]:
-            continue                                        # würde eine Mehrfachkante erzeugen -- verwerfen, neu ziehen
-        nbrs[a].discard(b)
-        nbrs[b].discard(a)
-        nbrs[c].discard(d)
-        nbrs[d].discard(c)
-        nbrs[na].add(nb)
-        nbrs[nb].add(na)
-        nbrs[nc].add(nd)
-        nbrs[nd].add(nc)
-        edges[i] = [na, nb]
-        edges[j] = [nc, nd]
+        flip = rng.random() < 0.5
+        try_double_swap(edges, nbrs, i, j, flip)
     return [(u, v) for u, v in edges]
 
 

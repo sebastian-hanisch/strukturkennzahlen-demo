@@ -49,14 +49,13 @@ SWEEP_SEEDS = tuple(range(100000, 100005))
 #   winzigen Umverdrahtungsanteilen auf. Bei p=0.1 ist L/L(0) bereits auf 0.2832 gefallen, während C/C(0) mit 0.7372 noch deutlich über dem Zufallsniveau liegt.
 # GRADVERTEILUNG (Standardgröße, Seed 35): Verhältnis Maximalgrad/mittlerer Grad (informeller Heavy-Tail-Hinweis, KEIN Machtgesetz-Test) - Betriebsnetz
 #   (Raster) 1.39, Erdős-Rényi gleicher Größe 2.78, skalenfreies Netz 8.84 - deutlich langschwänziger als beide Vergleichsnetze.
-# ASSORTATIVITÄT GEGEN KONFIGURATIONSMODELL-NULLVERTEILUNG (200 Ziehungen, Seed 35): Betriebsnetz r=0.10, z=1.35 gegen die Nullverteilung - NICHT
-#   signifikant, mit der bloßen Gradfolge verträglich. Ring bei p=0.01: r=-0.04, z=-1.13 - ebenfalls nicht signifikant. ÜBERRASCHUNG beim skalenfreien Netz:
-#   r=-0.17 (disassortativ), aber z=+25.1 gegen die Nullverteilung (Nullmodell-Mittelwert -0.36) - das gemessene Netz ist SIGNIFIKANT WENIGER disassortativ
-#   als die Gradfolge allein erwarten ließe. Bevorzugte Anbindung erzeugt also eine andere, mildere Form von Disassortativität als rein zufälliges Neu-
-#   Verdrahten derselben Gradfolge - die Disassortativität skalenfreier Netze ist keine bloße Folge ihrer schiefen Gradverteilung, sondern eine eigenständige
-#   Eigenschaft des Wachstumsprozesses selbst.
+# ASSORTATIVITÄT GEGEN KONFIGURATIONSMODELL-NULLVERTEILUNG (200 Ziehungen, Seed 35): Betriebsnetz r=0.10, z=1.51 gegen die Nullverteilung - NICHT
+#   signifikant, mit der bloßen Gradfolge verträglich. Ring bei p=0.01: r=-0.04, z=-1.08 - ebenfalls nicht signifikant. Skalenfreies Netz:
+#   r=-0.17 (disassortativ), z=-1.88 gegen die Nullverteilung (Nullmodell-Mittelwert -0.11, Std 0.029) - knapp nicht signifikant: die Disassortativität folgt weitgehend
+#   schon aus der Gradfolge. (Eine frühere Fassung des Doppeltauschs paarte die Kanten immer als (kleiner, größerer) Endpunkt, zog nicht gleichverteilt und zeigte z=+25 bei Mittelwert -0.36
+#   - ein Artefakt, durch exakte Aufzählung kleiner Gradfolgen und networkx.double_edge_swap widerlegt.)
 # KONFIGURATIONSMODELL ZERSTÖRT DAS RING-CLUSTERING: das reine Ring-Gitter (n=200, k=8, p=0) hat C=0.6429 (== 3(k-2)/(4(k-1)) exakt) - eine einzelne
-#   Konfigurationsmodell-Realisierung (5000 Doppeltausch-Versuche, gleiche Gradfolge) fällt auf C=0.0145, fast auf Erdős-Rényi-Niveau (0.0396). Das hohe
+#   Konfigurationsmodell-Realisierung (5000 Doppeltausch-Versuche, gleiche Gradfolge) fällt auf C=0.0268, auf Erdős-Rényi-Niveau (0.0396). Das hohe
 #   Clustering des Rings kommt NICHT aus der Gradfolge (jeder Knoten hat Grad 8), sondern aus der geometrischen Nachbarschaftsstruktur selbst.
 
 PRESETS = {
@@ -81,11 +80,10 @@ PRESET_HELP = {
     "Skalenfreies Netz (Heavy Tail)": "200 Knoten, 396 Kanten (m0=4, m=2): der Maximalgrad ist 8.84-mal so groß wie der mittlere Grad - beim Betriebsnetz nur das 1.39-Fache, beim Zufallsgraph "
                                       "gleicher Größe das 2.78-Fache. Deutlich langschwänziger als beide, aber kein formaler Machtgesetz-Test (Clauset u. a. 2009, hier bewusst nicht gebaut).",
     "Assortativität-Test (Betriebsnetz gegen Konfigurationsmodell)": "Das Betriebsnetz hat eine leicht positive Assortativität (r=0.10), aber der z-Wert gegen 200 Konfigurationsmodell-Ziehungen "
-                                                                      "ist nur 1.35 - NICHT signifikant: dieser Wert ist mit der bloßen Gradfolge verträglich, keine eigenständige Eigenschaft.",
+                                                                      "ist nur 1.51 - NICHT signifikant: dieser Wert ist mit der bloßen Gradfolge verträglich, keine eigenständige Eigenschaft.",
     "Konfigurationsmodell zerstört Clustering": "Das reine Ring-Gitter hat C=0.6429 - eine einzelne Konfigurationsmodell-Realisierung (gleiche Gradfolge, 5000 Doppeltausch-Versuche) fällt auf "
-                                                 "C=0.0145, fast auf Erdős-Rényi-Niveau (0.0396). Das hohe Clustering kommt NICHT aus der Gradfolge (jeder Knoten Grad 8), sondern aus der "
+                                                 "C=0.0268, auf Erdős-Rényi-Niveau (0.0396). Das hohe Clustering kommt NICHT aus der Gradfolge (jeder Knoten Grad 8), sondern aus der "
                                                  "geometrischen Anordnung selbst.",
-    "BA ist disassortativ": "Das skalenfreie Netz ist disassortativ (r=-0.17), aber ÜBERRASCHEND: der z-Wert von +25.1 gegen 200 Konfigurationsmodell-Ziehungen (Nullmodell-Mittelwert -0.36) zeigt, "
-                            "dass es sogar WENIGER disassortativ ist als die Gradfolge allein erwarten ließe - bevorzugte Anbindung erzeugt eine andere Form von Disassortativität als reines "
-                            "Zufallspaaren gleicher Grade.",
+    "BA ist disassortativ": "Das skalenfreie Netz ist disassortativ (r=-0.17): der z-Wert von -1.88 gegen 200 Konfigurationsmodell-Ziehungen (Nullmodell-Mittelwert -0.11) liegt knapp unter "
+                            "der Signifikanzschwelle - der Großteil der Disassortativität folgt schon aus der schiefen Gradfolge, kaum etwas bleibt dem Wachstumsprozess selbst.",
 }

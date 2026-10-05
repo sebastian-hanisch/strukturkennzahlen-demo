@@ -48,9 +48,9 @@ def test_heavy_tail_ratios():
 
 
 def test_assortativity_z_values():
-    cases = [("city", ev.Settings(kind="city", side=10, blocked=0.2, nettype="grid", seed=35), 1.35),
-             ("ring", ev.Settings(kind="ring", n_ring=200, k_ring=8, p_rewire=0.01, seed=35), -1.13),
-             ("ba", ev.Settings(kind="ba", n_ba=200, m_ba=2, m0_ba=4, seed=35), 25.1)]
+    cases = [("city", ev.Settings(kind="city", side=10, blocked=0.2, nettype="grid", seed=35), 1.51),
+             ("ring", ev.Settings(kind="ring", n_ring=200, k_ring=8, p_rewire=0.01, seed=35), -1.08),
+             ("ba", ev.Settings(kind="ba", n_ba=200, m_ba=2, m0_ba=4, seed=35), -1.88)]
     for label, settings, want_z in cases:
         inst = ev.instance(settings)
         adj = A.adjacency(inst.n, inst.edges)
@@ -58,14 +58,14 @@ def test_assortativity_z_values():
         assert d["z"] == pytest.approx(want_z, abs=0.05), label
 
 
-def test_ba_disassortativity_is_less_extreme_than_its_own_degree_sequence_predicts():
-    """Ueberraschender Befund: das skalenfreie Netz ist SIGNIFIKANT WENIGER disassortativ als das Konfigurationsmodell (gleiche Gradfolge) vorhersagt."""
+def test_ba_disassortativity_is_mostly_explained_by_its_degree_sequence():
+    """Die Disassortativitaet des skalenfreien Netzes folgt weitgehend aus der Gradfolge: Konfigurationsmodell-Mittel -0.11, z=-1.88 (frueher z=+25 durch einseitig gepaarten Doppeltausch)."""
     settings = ev.Settings(kind="ba", n_ba=200, m_ba=2, m0_ba=4, seed=35)
     inst = ev.instance(settings)
     adj = A.adjacency(inst.n, inst.edges)
     d = ev.assortativity_null_distribution(adj, C.N_DRAWS_ASSORT, C.DEFAULT_N_SWAPS, settings.seed)
-    assert d["original"] > d["mean"]                                 # weniger disassortativ (naeher an 0) als der Nullmodell-Mittelwert
-    assert d["z"] > 2.0                                               # signifikant
+    assert d["mean"] == pytest.approx(-0.1126, abs=0.002)
+    assert abs(d["z"]) < 2.0                                          # nicht signifikant: mit der Gradfolge verträglich
 
 
 def test_ring_lattice_closed_form_several_k():
@@ -80,5 +80,5 @@ def test_ring_lattice_closed_form_several_k():
 def test_config_model_destroys_ring_clustering():
     inst, a = ev.analyse(ev.Settings(kind="ring", n_ring=200, k_ring=8, p_rewire=0.0, seed=35, n_swaps=C.DEFAULT_N_SWAPS))
     assert round(a.avg_clustering, 4) == 0.6429
-    assert round(a.config.avg_clustering, 4) == 0.0145
+    assert round(a.config.avg_clustering, 4) == 0.0268
     assert a.config.avg_clustering < a.avg_clustering / 10           # Groessenordnung zerstoert
